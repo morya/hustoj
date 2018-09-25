@@ -13,19 +13,20 @@ RUN set -ex \
 		fp-compiler \
 		openjdk-7-jdk \
 		clang \
+		golang-1.6 \
 	#&& apt-get remove --purge git
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN set -ex \
 	&& echo 'mysql-server-5.5 mysql-server/root_password password ""' | debconf-set-selections \
 	&& echo 'mysql-server-5.5 mysql-server/root_password_again password ""' |debconf-set-selections \
-	&& apt-get update && apt-get install -y mysql-server golang-1.6 \
+	&& apt-get update && apt-get install -y mysql-server \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN set -ex \
 	&& /usr/sbin/useradd -m -u 1536 judge \
-	&& cd / && git clone https://github.com/morya/hustoj.git \
-	&& mv /hustoj/trunk /home/judge/src \
+	&& cd / && git clone https://gitee.com/morya/hustoj.git \
+	&& mv /hustoj/trunk /home/judge/src
 	# rm -R /hustoj
 
 RUN set -ex \
