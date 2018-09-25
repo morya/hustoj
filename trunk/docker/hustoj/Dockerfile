@@ -1,5 +1,5 @@
 FROM ubuntu:trusty-20171117
-#COPY ./sources.list /etc/apt/sources.list
+COPY ./sources.list /etc/apt/sources.list
 #FROM debian:jessie-slim
 
 RUN set -ex \
@@ -14,24 +14,24 @@ RUN set -ex \
 		openjdk-7-jdk \
 		clang \
 	#&& apt-get remove --purge git
-	&& rm -rf /var/lib/apt/lists/* 
-	
+	&& rm -rf /var/lib/apt/lists/*
+
 RUN set -ex \
 	&& echo 'mysql-server-5.5 mysql-server/root_password password ""' | debconf-set-selections \
 	&& echo 'mysql-server-5.5 mysql-server/root_password_again password ""' |debconf-set-selections \
-	&& apt-get update && apt-get install -y mysql-server \
+	&& apt-get update && apt-get install -y mysql-server golang-1.6 \
 	&& rm -rf /var/lib/apt/lists/*
-	
+
 RUN set -ex \
 	&& /usr/sbin/useradd -m -u 1536 judge \
-	&& cd / && git clone https://github.com/zhblue/hustoj.git \	
+	&& cd / && git clone https://github.com/morya/hustoj.git \
 	&& mv /hustoj/trunk /home/judge/src \
-	&& rm -R /hustoj 
-	
+	&& rm -R /hustoj
+
 RUN set -ex \
 	&& USER=`cat /etc/mysql/debian.cnf |grep user|head -1|awk  '{print $3}'` \
 	&& PASSWORD=`cat /etc/mysql/debian.cnf |grep password|head -1|awk  '{print $3}'` \
-	&& CPU=`grep "cpu cores" /proc/cpuinfo |head -1|awk '{print $4}'`   \	
+	&& CPU=`grep "cpu cores" /proc/cpuinfo |head -1|awk '{print $4}'`   \
 	&& cd /home/judge/                  \
 	&& mkdir etc data log   \
 	&& cp src/install/java0.policy  /home/judge/etc   \
@@ -54,7 +54,7 @@ RUN set -ex \
 	&& sed -i "s:#\tfastcgi_index:\tfastcgi_index:g" /etc/nginx/sites-enabled/default   \
 	&& sed -i "s:#\tinclude fastcgi_params;:\tinclude fastcgi_params;\n\t}:g" /etc/nginx/sites-enabled/default   \
 	&& sed -i "s/post_max_size = 8M/post_max_size = 80M/g" /etc/php5/fpm/php.ini     \
-	&& sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 80M/g" /etc/php5/fpm/php.ini   
+	&& sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 80M/g" /etc/php5/fpm/php.ini
 
 RUN set -ex \
 	&& cd /home/judge/src/core/judged \
@@ -65,7 +65,7 @@ RUN set -ex \
     && make \
     && chmod +x judge_client \
     && cp judge_client /usr/bin \
-	&& cd /home/judge/ 
+	&& cd /home/judge/
 
 RUN set -ex \
 	&& chown -R mysql:mysql /var/lib/mysql  \
@@ -76,8 +76,8 @@ RUN set -ex \
 	&& mysql -h localhost -u$USER -p$PASSWORD< /home/judge/src/install/db.sql \
 	&& echo "insert into jol.privilege values('admin','administrator','N');"|mysql -h localhost -u$USER -p$PASSWORD \
 	&& service mysql stop
-	
-	
+
+
 RUN chmod +x /home/judge/src/core/make.sh
 RUN cd /home/judge/src/core/ && ./make.sh
 RUN cd /usr/bin && rm awk && cp -s mawk awk
@@ -92,6 +92,6 @@ RUN set -ex \
 	&& ln -s /usr/local/bin/docker-entrypoint.sh  /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-#CMD judged /home/judge debug && 
+#CMD judged /home/judge debug &&
 #CMD tail -f /dev/null
 

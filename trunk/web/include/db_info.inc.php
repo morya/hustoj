@@ -1,11 +1,11 @@
 <?php @session_start();
 	ini_set("display_errors","Off");  //set this to "On" for debugging  ,especially when no reason blank shows up.
-	ini_set("session.cookie_httponly", 1);   
+	ini_set("session.cookie_httponly", 1);
 	header('X-Frame-Options:SAMEORIGIN');
 
 //for people using hustoj out of China , be careful of the last two line of this file !
 
-// connect db 
+// connect db
 static 	$DB_HOST="localhost";
 static 	$DB_NAME="jol";
 static 	$DB_USER="root";
@@ -18,7 +18,7 @@ static 	$OJ_DATA="/home/judge/data";
 static 	$OJ_BBS="discuss3";//"bbs" for phpBB3 bridge or "discuss" for mini-forum
 static  $OJ_ONLINE=false;
 static  $OJ_LANG="en";
-static  $OJ_SIM=false; 
+static  $OJ_SIM=false;
 static  $OJ_DICT=false;
 static  $OJ_LANGMASK=0; //1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language
 static  $OJ_EDITE_AREA=true;//true: syntax highlighting is active
@@ -79,11 +79,11 @@ if( isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && strstr($_SERVER['HTTP_ACCEPT_LANG
 }
 if (isset($_SESSION[$OJ_NAME.'_'.'OJ_LANG'])) $OJ_LANG=$_SESSION[$OJ_NAME.'_'.'OJ_LANG'];
 
-require_once(dirname(__FILE__)."/pdo.php");
+require_once("pdo.php");
 
 		// use db
-	//pdo_query("set names utf8");	
-		
+	//pdo_query("set names utf8");
+
 	if(isset($OJ_CSRF)&&$OJ_CSRF&&$OJ_TEMPLATE=="bs3"&&basename($_SERVER['PHP_SELF'])!="problem_judge")
 		 require_once('csrf_check.php');
 

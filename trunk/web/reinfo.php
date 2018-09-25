@@ -5,7 +5,7 @@
     require_once('./include/db_info.inc.php');
 	require_once('./include/setlang.php');
 	$view_title= "Welcome To Online Judge";
-	
+
 require_once("./include/const.inc.php");
 if (!isset($_GET['sid'])){
 	echo "No such code!\n";
@@ -34,26 +34,27 @@ if ($row && $row['user_id']==$_SESSION[$OJ_NAME.'_'.'user_id']) $ok=true;
 if (isset($_SESSION[$OJ_NAME.'_'.'source_browser'])) $ok=true;
 $view_reinfo="";
 if ($ok==true){
-	if($row['user_id']!=$_SESSION[$OJ_NAME.'_'.'user_id'])
-		$view_mail_link= "<a href='mail.php?to_user=".htmlentities($row['user_id'],ENT_QUOTES,"UTF-8")."&title=$MSG_SUBMIT $id'>Mail the auther</a>";
-	
+	if($row['user_id']!=$_SESSION[$OJ_NAME.'_'.'user_id']) {
+		$view_mail_link= "<a href='mail.php?to_user="
+			. htmlentities($row['user_id'],ENT_QUOTES,"UTF-8")
+			. "&title=$MSG_SUBMIT $id'>Mail the auther</a>";
+	}
+
 	$sql="SELECT `error` FROM `runtimeinfo` WHERE `solution_id`=?";
 	$result=pdo_query($sql,$id);
-	 $row=$result[0];
-	if($row&&($OJ_SHOW_DIFF||$isRE)&&($OJ_TEST_RUN||is_valid($row['error']))){	
+	$row=$result[0];
+
+	if ($row&&($OJ_SHOW_DIFF||$isRE)&&($OJ_TEST_RUN||is_valid($row['error']))){
 		$view_reinfo= htmlentities(str_replace("\n\r","\n",$row['error']),ENT_QUOTES,"UTF-8");
 	}else{
-		
 		$view_reinfo="sorry , not available (RE:".$isRE.",OJ_SHOW_DIFF:".$OJ_SHOW_DIFF.",TR:".$OJ_TEST_RUN.",valid:".is_valid($row['error']).")";
 	}
-        
-	
 }else{
-	
+
 	$view_errors= "I am sorry, You could not view this message!";
 	require("template/".$OJ_TEMPLATE."/error.php");
 	exit(0);
-	
+
 }
 
 /////////////////////////Template
