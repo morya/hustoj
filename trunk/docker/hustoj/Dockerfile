@@ -26,7 +26,7 @@ RUN set -ex \
 	&& /usr/sbin/useradd -m -u 1536 judge \
 	&& cd / && git clone https://github.com/morya/hustoj.git \
 	&& mv /hustoj/trunk /home/judge/src \
-	&& rm -R /hustoj
+	# rm -R /hustoj
 
 RUN set -ex \
 	&& USER=`cat /etc/mysql/debian.cnf |grep user|head -1|awk  '{print $3}'` \
