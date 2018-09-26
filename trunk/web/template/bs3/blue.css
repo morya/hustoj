@@ -1,3 +1,6 @@
+body {
+    padding:20px;
+}
 .toprow{
    background-color:#79a3d5;
    white-space:nowrap;

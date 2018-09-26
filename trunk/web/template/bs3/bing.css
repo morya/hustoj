@@ -1,3 +1,6 @@
+body {
+    padding:20px;
+}
 .toprow{
    background-color:#79a3d5;
    white-space:nowrap;
@@ -33,7 +36,7 @@ background-attachment: fixed;
 background-repeat: no-repeat;
 background-size: cover;
 opacity: 0.9;
-   
+
 }
 .navbar{
     position: fixed;
