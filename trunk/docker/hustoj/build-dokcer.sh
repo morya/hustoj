@@ -11,4 +11,4 @@ docker rm -f /hustoj-dev
 #docker run -d -it --privileged --name hustoj-dev -p 9090:80 -v /home/test/:/data hustoj-dev
 docker run -d -it --privileged --name hustoj-dev -p 9090:80 hustoj-dev
 #docker run -d -it --name hustoj-dev -p 80:80 hustoj-dev
-docker exec -i -t hustoj-dev /bin/bash
+#docker exec -i -t hustoj-dev /bin/bash
